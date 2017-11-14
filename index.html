@@ -56,9 +56,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -83,7 +83,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/14/通过get特性获取服务端数据/">通过get特性获取服务端数据</a>
+      <a class="article-title" href="/2017/11/14/通过get特性获取服务端数据/">JSONP的跨域</a>
     </h1>
   
 
@@ -96,7 +96,11 @@
 <li>1.get不安全，会在链接处显示用户输入的信息数据，Get将表单中数据的按照variable=value的形式，添加到action所指向的URL后面，并且两者使用“?”连接，而各个变量之间使用“&amp;”连接</li>
 <li>2.Get传输的数据量小，这主要是因为受URL长度限制<br>因为这样的特性，我们通常用get方式获取数据，用post方式传递数据</li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/6970920-bb29999c1e0dea2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get"><br>我将通过一个查验快递包裹的小例子说明<br>当我们苦等快递的时候，就会输入快递单号，然后查验出快递的状态和位置，今天就做一个简单版的查快递，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/6970920-b1911785dcdcd081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/6970920-e751413139f8758b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p>JSONP的最基本的原理是：动态添加一个<script>标签，而script标签的src属性是没有跨域的限制的。这样说来，这种跨域方式其实与ajax XmlHttpRequest协议无关了。</p>
+</blockquote>
+<p>JSONP的优点是：它不像XMLHttpRequest对象实现的Ajax请求那样受到同源策略的限制；它的兼容性更好，在更加古老的浏览器中都 可以运行，不需要XMLHttpRequest或ActiveX的支持；并且在请求完毕后可以通过调用callback的方式回传结果。</p>
+<p>JSONP的缺点则是：它只支持GET请求而不支持POST等其它类型的HTTP请求；它只支持跨域HTTP请求这种情况，不能解决不同域的两个页面之间如何进行JavaScript调用的问题。<br><img src="http://upload-images.jianshu.io/upload_images/6970920-bb29999c1e0dea2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get"><br>我将通过一个查验快递包裹的小例子说明<br>当我们苦等快递的时候，就会输入快递单号，然后查验出快递的状态和位置，今天就做一个简单版的查快递，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/6970920-b1911785dcdcd081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/6970920-e751413139f8758b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>首先开始完成服务端的代码，创建一个check.php文件；<br>先将用户的数据写入数组。</p>
 <blockquote>
 <p>  /**</p>
@@ -162,11 +166,11 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
     div.innerHTML = jsonstr.info+&quot; &quot;+jsonstr.status;
 }
 </code></pre><p>这样一个简化版的查快递就完成了！</p>
-
+</script></p></blockquote>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cj9zo7z8n0002bdwlap5e9r68" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cj9zohbfq0001nkwl6np7knj0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -202,7 +206,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cj9zo7z8g0000bdwlnl63g1og" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cj9zohbfm0000nkwlb2q7k9cl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -247,7 +251,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cj9zo7z8k0001bdwlcnux82gr" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cj9zohbgs0002nkwlt5tz8lbx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -282,12 +286,12 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2017/11/14/通过get特性获取服务端数据/">通过get特性获取服务端数据</a>
+            <a href="/2017/11/14/通过get特性获取服务端数据/">JSONP的跨域</a>
           </li>
         
           <li>
@@ -311,7 +315,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 Ben Ye<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
