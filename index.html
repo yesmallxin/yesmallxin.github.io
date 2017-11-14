@@ -56,9 +56,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -91,11 +91,82 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>大家都知道form表单有两种方式，post和get。</p>
+<ul>
+<li>1.get不安全，会在链接处显示用户输入的信息数据，Get将表单中数据的按照variable=value的形式，添加到action所指向的URL后面，并且两者使用“?”连接，而各个变量之间使用“&amp;”连接</li>
+<li>2.Get传输的数据量小，这主要是因为受URL长度限制<br>因为这样的特性，我们通常用get方式获取数据，用post方式传递数据</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6970920-bb29999c1e0dea2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get"><br>我将通过一个查验快递包裹的小例子说明<br>当我们苦等快递的时候，就会输入快递单号，然后查验出快递的状态和位置，今天就做一个简单版的查快递，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/6970920-b1911785dcdcd081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/6970920-e751413139f8758b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>首先开始完成服务端的代码，创建一个check.php文件；<br>先将用户的数据写入数组。</p>
+<blockquote>
+<p>  /**</p>
+<pre><code>* 快递包裹查询API
+* 传送方式：get
+* 参数：kuaidi_id 需要查询的快递单号
+* 参数：callback 回调函数名
+*/
+</code></pre></blockquote>
+<pre><code>&lt;?php
+    $kuaidi[&apos;1000&apos;] = array(
+    &apos;info&apos; =&gt; &apos;王小三的快递&apos;,
+    &apos;status&apos; =&gt; &apos;配送中&apos;,
+);
+$kuaidi[&apos;1001&apos;] = array(
+    &apos;info&apos; =&gt; &apos;王三的快递&apos;,
+    &apos;status&apos; =&gt; &apos;配送中&apos;,
+);
+$kuaidi[&apos;1002&apos;] = array(
+    &apos;info&apos; =&gt; &apos;张三的快递&apos;,
+    &apos;status&apos; =&gt; &apos;已配送&apos;,
+);
+
+    //如果前台传送了快递单号就执行查询
+if(!empty($_GET[&apos;kuaidi_id&apos;])){
+    //如果没传回调函数名
+    if(empty($_GET[&apos;callback&apos;])){
+        //直接输出json串
+        echo &quot;var jsonstr=\&quot;&quot;.json_encode($kuaidi[$_GET[&apos;kuaidi_id&apos;]]).&quot;\&quot;&quot;;
+    }else {
+        //如果有回调函数，输出JSONP
+        echo $_GET[&apos;callback&apos;].&quot;(&quot;.json_encode($kuaidi[$_GET[&apos;kuaidi_id&apos;]]).&quot;)&quot;;
+    }
+}
+?&gt;
+</code></pre><p>写完服务端代码，开始写前台代码,构建好界面</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form action=&quot;&quot; method=&quot;get&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;thing_id&quot; id=&quot;thing_id&quot;/&gt;
+        &lt;input type=&quot;button&quot; name=&quot;btn&quot; value=&quot;提交&quot; id=&quot;btn&quot;/&gt;
+    &lt;/form&gt;
+    &lt;div id=&quot;div&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>然后写入js,写在body标签后面,首先要获取我们需要的变量</p>
+<pre><code>var btn = document.getElementById(&quot;btn&quot;);
+var thing_id = document.getElementById(&quot;thing_id&quot;);
+</code></pre><p>之后写入btn的点击事件，通过点击btn触发，动态生成script标签，同时通过src链接通过get的特性从服务端获取我们需要的数据</p>
+<pre><code>btn.onclick =function(){
+    var script = document.createElement(&quot;script&quot;);
+    script.src=&quot;快递物流.php?kuaidi_id=&quot;+thing_id.value+&quot;&amp;callback=myFunc&quot;;
+    document.body.append(script);
+}
+</code></pre><p>因为使用了回调函数，最后通过函数得到从服务端获得的参数，将服务端的信息输出到页面上</p>
+<pre><code>function myFunc(jsonstr){
+    var div =document.getElementById(&quot;div&quot;);
+    div.innerHTML = jsonstr.info+&quot; &quot;+jsonstr.status;
+}
+</code></pre><p>这样一个简化版的查快递就完成了！</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cj9zo41eu00006cwl00h8kpfg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cj9zo7z8n0002bdwlap5e9r68" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -131,7 +202,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cj9zo41fp00016cwl96gf87cx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cj9zo7z8g0000bdwlnl63g1og" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -176,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cj9zo41fr00026cwlgzfjtut4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cj9zo7z8k0001bdwlcnux82gr" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -211,7 +282,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -240,7 +311,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 Ben Ye<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
