@@ -256,7 +256,7 @@ echo json_encode($danmu);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja2jo4jv0000l4wl2tzoinp0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja2josvh0000miwlbffyo44p" class="article-share-link">Share</a>
       
       
     </footer>
@@ -291,11 +291,10 @@ echo json_encode($danmu);
         <h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>大家都知道form表单有两种方式，post和get。</p>
 <ul>
 <li>1.get不安全，会在链接处显示用户输入的信息数据，Get将表单中数据的按照variable=value的形式，添加到action所指向的URL后面，并且两者使用“?”连接，而各个变量之间使用“&amp;”连接</li>
-<li>2.Get传输的数据量小，这主要是因为受URL长度限制<br>因为这样的特性，我们通常用get方式获取数据，用post方式传递数据</li>
+<li><p>2.Get传输的数据量小，这主要是因为受URL长度限制<br>因为这样的特性，我们通常用get方式获取数据，用post方式传递数据</p>
+<p>JSONP的最基本的原理是：动态添加一个script标签，而script标签的src属性是没有跨域的限制的。这样说来，这种跨域方式其实与ajax XmlHttpRequest协议无关了。</p>
+</li>
 </ul>
-<blockquote>
-<p>JSONP的最基本的原理是：动态添加一个<script>标签，而script标签的src属性是没有跨域的限制的。这样说来，这种跨域方式其实与ajax XmlHttpRequest协议无关了。</p>
-</blockquote>
 <p>JSONP的优点是：它不像XMLHttpRequest对象实现的Ajax请求那样受到同源策略的限制；它的兼容性更好，在更加古老的浏览器中都 可以运行，不需要XMLHttpRequest或ActiveX的支持；并且在请求完毕后可以通过调用callback的方式回传结果。</p>
 <p>JSONP的缺点则是：它只支持GET请求而不支持POST等其它类型的HTTP请求；它只支持跨域HTTP请求这种情况，不能解决不同域的两个页面之间如何进行JavaScript调用的问题。<br><img src="http://upload-images.jianshu.io/upload_images/6970920-bb29999c1e0dea2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get"><br>我将通过一个查验快递包裹的小例子说明<br>当我们苦等快递的时候，就会输入快递单号，然后查验出快递的状态和位置，今天就做一个简单版的查快递，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/6970920-b1911785dcdcd081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/6970920-e751413139f8758b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>首先开始完成服务端的代码，创建一个check.php文件；<br>先将用户的数据写入数组。</p>
@@ -363,11 +362,11 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
     div.innerHTML = jsonstr.info+&quot; &quot;+jsonstr.status;
 }
 </code></pre><p>这样一个简化版的查快递就完成了！</p>
-</script></p></blockquote>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja2jo4k00001l4wlmddgxo4a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja2josvp0003miwl8v1vti3c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -403,7 +402,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja2jo4k20002l4wlecliwn2q" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja2josvl0001miwlvmbn8h1f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -448,7 +447,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja2jo4m10003l4wloq9tplqm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja2josvo0002miwl2z98cdf7" class="article-share-link">Share</a>
       
       
     </footer>
