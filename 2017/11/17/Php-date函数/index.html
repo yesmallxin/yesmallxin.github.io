@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Php date函数 | 一只程序猿的后花园</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="date日期时间函数是php函数部分核心，下面我来列举下它的用法  语法 date(format,timestamp)  其中format参数是必需的部分，规定输出日期字符串的格式，timestamp是可选项，规定整数的 Unix 时间戳。默认是当前的本地时间（time()）。我们来重点关注有哪些字符可以使用：  d - 一个月中的第几天（从 01 到 31） D - 星期几的文本表示（用三个字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Php date函数">
+<meta property="og:url" content="http://yoursite.com/2017/11/17/Php-date函数/index.html">
+<meta property="og:site_name" content="一只程序猿的后花园">
+<meta property="og:description" content="date日期时间函数是php函数部分核心，下面我来列举下它的用法  语法 date(format,timestamp)  其中format参数是必需的部分，规定输出日期字符串的格式，timestamp是可选项，规定整数的 Unix 时间戳。默认是当前的本地时间（time()）。我们来重点关注有哪些字符可以使用：  d - 一个月中的第几天（从 01 到 31） D - 星期几的文本表示（用三个字">
+<meta property="og:locale" content="ch-CN">
+<meta property="og:updated_time" content="2017-11-17T13:34:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Php date函数">
+<meta name="twitter:description" content="date日期时间函数是php函数部分核心，下面我来列举下它的用法  语法 date(format,timestamp)  其中format参数是必需的部分，规定输出日期字符串的格式，timestamp是可选项，规定整数的 Unix 时间戳。默认是当前的本地时间（time()）。我们来重点关注有哪些字符可以使用：  d - 一个月中的第几天（从 01 到 31） D - 星期几的文本表示（用三个字">
+  
+    <link rel="alternate" href="/atom.xml" title="一只程序猿的后花园" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">一只程序猿的后花园</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一入江湖岁月催</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Php-date函数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/17/Php-date函数/" class="article-date">
+  <time datetime="2017-11-17T13:33:22.000Z" itemprop="datePublished">2017-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Php date函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>date日期时间函数是php函数部分核心，下面我来列举下它的用法</p>
+</blockquote>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><blockquote>
+<p>date(format,timestamp)</p>
+</blockquote>
+<p>其中format参数是必需的部分，规定输出日期字符串的格式，timestamp是可选项，规定整数的 Unix 时间戳。默认是当前的本地时间（time()）。我们来重点关注有哪些字符可以使用：</p>
+<ul>
+<li>d - 一个月中的第几天（从 01 到 31）</li>
+<li>D - 星期几的文本表示（用三个字母表示）</li>
+<li>j - 一个月中的第几天，不带前导零（1 到 31）</li>
+<li>l（’L’ 的小写形式）- 星期几的完整的文本表示</li>
+<li>N - 星期几的 ISO-8601 数字格式表示（1表示Monday[星期一]，7表示Sunday[星期日]）</li>
+<li>S - 一个月中的第几天的英语序数后缀（2 个字符：st、nd、rd 或 th。与 j 搭配使用）</li>
+<li>w - 星期几的数字表示（0 表示 Sunday[星期日]，6 表示 Saturday[星期六]）</li>
+<li>z - 一年中的第几天（从 0 到 365）</li>
+<li>W - 用 ISO-8601 数字格式表示一年中的星期数字（每周从 Monday[星期一]开始）</li>
+<li>F - 月份的完整的文本表示（January[一月份] 到 December[十二月份]）</li>
+<li>m - 月份的数字表示（从 01 到 12）</li>
+<li>M - 月份的短文本表示（用三个字母表示）</li>
+<li>n - 月份的数字表示，不带前导零（1 到 12）</li>
+<li>t - 给定月份中包含的天数</li>
+<li>L - 是否是闰年（如果是闰年则为 1，否则为 0）</li>
+<li>o - ISO-8601 标准下的年份数字</li>
+<li>Y - 年份的四位数表示</li>
+<li>y - 年份的两位数表示</li>
+<li>a - 小写形式表示：am 或 pm</li>
+<li>A - 大写形式表示：AM 或 PM</li>
+<li>B - Swatch Internet Time（000 到 999）</li>
+<li>g - 12 小时制，不带前导零（1 到 12）</li>
+<li>G - 24 小时制，不带前导零（0 到 23）</li>
+<li>h - 12 小时制，带前导零（01 到 12）</li>
+<li>H - 24 小时制，带前导零（00 到 23）</li>
+<li>i - 分，带前导零（00 到 59）</li>
+<li>s - 秒，带前导零（00 到 59）</li>
+<li>u - 微秒（PHP 5.2.2 中新增的）</li>
+<li>e - 时区标识符（例如：UTC、GMT、Atlantic/Azores）</li>
+<li>I（i 的大写形式）- 日期是否是在夏令时（如果是夏令时则为 1，否则为 0）</li>
+<li>O - 格林威治时间（GMT）的差值，单位是小时（实例：+0100）</li>
+<li>P - 格林威治时间（GMT）的差值，单位是 hours:minutes（PHP 5.1.3 中新增的）</li>
+<li>T - 时区的简写（实例：EST、MDT）</li>
+<li>Z - 以秒为单位的时区偏移量。UTC 以西时区的偏移量为负数（-43200 到 50400）</li>
+<li>c - ISO-8601 标准的日期（例如 2013-05-05T16:34:42+00:00）</li>
+<li>r - RFC 2822 格式的日期（例如 Fri, 12 Apr 2013 12:01:05 +0200）</li>
+<li>U - 自 Unix 纪元（January 1 1970 00:00:00 GMT）以来经过的秒数</li>
+</ul>
+<h2 id="—————"><a href="#—————" class="headerlink" title="—————"></a>—————</h2><h4 id="然后我们来关注下常用的方式"><a href="#然后我们来关注下常用的方式" class="headerlink" title="然后我们来关注下常用的方式"></a>然后我们来关注下常用的方式</h4><blockquote>
+<p>1.年-月-日</p>
+</blockquote>
+<pre><code>echo date(&quot;Y-m-d&quot;); 
+2017-11-17
+echo date(&quot;y-n-j&quot;);
+17-11-17
+echo date(&apos;Y-M-j&apos;);
+2017-Nov-17
+echo date(&apos;Y-F-jS&apos;);
+2017-November-17th
+</code></pre><blockquote>
+<ol>
+<li>时：分：秒</li>
+</ol>
+</blockquote>
+<pre><code>echo date(&apos;g:i:s a&apos;);
+9:14:54 pm
+echo date(&apos;h:i:s A&apos;);
+09:15:55 PM
+echo date(&apos;G:i:s&apos;);
+21:16:26
+</code></pre><blockquote>
+<p>3.闰年，星期，天</p>
+</blockquote>
+<pre><code>echo date(&apos;L&apos;);
+今年是否闰年：0
+echo date(&apos;l&apos;);
+今天是：Friday
+echo date(&apos;D&apos;);
+今天是：Fri
+echo date(&apos;w&apos;);
+今天星期：5
+echo date(&apos;W&apos;);
+本周是全年中的第 46 周
+echo date(&apos;t&apos;);
+本月是 30 天
+echo date(&apos;z&apos;);
+今天是今年的第 320 天
+</code></pre><p>###在这里再介绍一个函数</p>
+<h3 id="microtime函数"><a href="#microtime函数" class="headerlink" title="microtime函数"></a>microtime函数</h3><p>如果调用时不带可选参数，本函数以 “msec sec” 的格式返回一个字符串，其中 sec 是自 Unix 纪元（0:00:00 January 1, 1970 GMT）起到现在的秒数，msec 是微秒部分。字符串的两部分都是以秒为单位返回的。</p>
+<pre><code>echo microtime();
+0.84718500 1510925114
+</code></pre><p>然后在这里做一个小测试帮大家熟悉这个函数，顺便复习下循环，我们来检测下三种循环的速度</p>
+<pre><code>$array = range(1,10000);
+$t0 = microtime(true);
+for($i=0;$i&lt;count($array);$i++){
+
+}
+$t1 = microtime(true);
+$i=0;
+while($i&lt;count($array)){
+    $i++;
+}
+$t2 = microtime(true);
+foreach($array as $key=&gt;$val){
+
+}
+$t3 = microtime(true);
+echo &quot;for循环耗时：&quot;.($t1 - $t0).&quot;&lt;br&gt;&quot;;
+echo &quot;while循环耗时：&quot;.($t2 - $t1).&quot;&lt;br&gt;&quot;;
+echo &quot;foreach循环耗时：&quot;.($t3 - $t2).&quot;&lt;br&gt;&quot;;
+</code></pre><p>打印出来结果如下</p>
+<blockquote>
+<p>for循环耗时：0.0014710426330566<br>while循环耗时：0.00098490715026855<br>foreach循环耗时：0.018208026885986</p>
+</blockquote>
+<p>所以我们得出while循环的耗时最短</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja3y4h350001qbwlzlos8qx0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/16/AJAX进行form表单的提交/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AJAX进行form表单的提交</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/17/Php-date函数/">Php date函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/16/AJAX进行form表单的提交/">AJAX进行form表单的提交</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/14/通过get特性获取服务端数据/">JSONP的跨域</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/13/PHP基础语法/">PHP基础语法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/11/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Ben Ye<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
