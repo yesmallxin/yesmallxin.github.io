@@ -69,10 +69,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-sdsa" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-分页器简化版" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/19/sdsa/" class="article-date">
-  <time datetime="2017-11-19T05:13:22.000Z" itemprop="datePublished">2017-11-19</time>
+    <a href="/2017/11/20/分页器简化版/" class="article-date">
+  <time datetime="2017-11-20T13:58:07.000Z" itemprop="datePublished">2017-11-20</time>
 </a>
     
   </div>
@@ -83,7 +83,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/19/sdsa/">sdsa</a>
+      <a class="article-title" href="/2017/11/20/分页器简化版/">分页器简化版</a>
     </h1>
   
 
@@ -91,11 +91,137 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>分页器基本是每个网站都会有的一部分组件。例如<br><img src="http://upload-images.jianshu.io/upload_images/6970920-7ec9b3ddeecaf398.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在这里我们进行简化，做出来简化版，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/6970920-7bffadaae3a51b5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在码代码之前我们还是要看好这个分页器的需求</p>
+<ul>
+<li>首先这个分页器分为两部分，上面部分是主题内容，上面的主题内容每页最多有三个新闻内容，下面是分页器，点击下面的分页器每个数字可以对应上面每个不同的主题内容页面；</li>
+<li><p>每页页码不超过9页，点击的那个页面保持在中间<br>首先开始HTML页面的搭建</p>
+<p>   <style></p>
+<pre><code>    a{
+        display: block;
+        border: 1px solid #ececec;
+        width: 30px;
+        height: 30px;
+        float: left;
+
+        text-decoration: none;
+        text-align: center;
+        line-height: 30px;
+    }
+    ul {
+        height: 306px;
+        padding-left: 0;
+        margin: 0;
+    }
+    li{
+        float: left;
+        list-style: none;
+        width: 100%;
+        height: 100px;
+        line-height: 100px;
+        border: 1px solid black;
+        text-align: center;
+
+    }
+    #content{
+        width: 480px;
+        height: 306px;
+
+    }
+    #pagenav{
+        margin-left: 80px;
+        color: blue;
+        text-align: center;
+    }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;content&quot;&gt;
+    &lt;!--新闻区域--&gt;
+    &lt;ul&gt;
+        &lt;li&gt;新闻0&lt;/li&gt;
+        &lt;li&gt;新闻1&lt;/li&gt;
+        &lt;li&gt;新闻2&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;!--页码导航--&gt;
+&lt;div id=&quot;pagenav&quot;&gt;
+
+&lt;/div&gt;
+&lt;/body&gt;
+</code></pre></li>
+</ul>
+<p>然后开始JS部分</p>
+<pre><code>&lt;script src=&quot;http://libs.baidu.com/jquery/2.0.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    var totalNum = 200;
+    var pageSize = 3;
+    var totalPage = Math.ceil(totalNum / pageSize);//设置总页面
+    createNav(5);
+</code></pre><p>封装一个方法创建页码导航栏；并定义他们页码开始和结束的地方</p>
+<pre><code>function createNav(pageIndex) {
+    pageIndex = parseInt(pageIndex);
+    var start = pageIndex -4&gt;0?pageIndex-4:1;
+    var end = pageIndex + 4&gt;totalPage?totalPage:pageIndex+4;
+    end = end-start&lt;8?start+8&gt;totalPage?totalPage:start+8:end;
+    if(end==totalPage){
+        start=totalPage-8&gt;0?totalPage-8:1;
+    }
+    document.getElementById(&quot;pagenav&quot;).innerHTML =&quot;&quot;;
+    for(var i=start;i&lt;=end;i++){
+        var a = document.createElement(&quot;a&quot;);
+        a.innerHTML = i;
+        a.dataset.page = i;
+        a.onclick = ViewNews;
+        document.getElementById(&apos;pagenav&apos;).appendChild(a);
+    }
+}
+</code></pre><p>封装一个方法将后台传送来的数据输出到新闻内容栏中</p>
+<pre><code>function createNews(data){
+        var news =&quot;&quot;;
+        for(i in data){
+            news+=&quot;&lt;li&gt;&quot;+data[i][0]+&quot;&lt;/li&gt;&quot;;
+        }
+        document.getElementById(&quot;content&quot;).innerHTML = news;
+    }
+</code></pre><p>封装一个点击方法，将点击的页码传给后台，点击页码对应相应的主题界面</p>
+<pre><code>    function ViewNews(){
+        var pageIndex =this.dataset.page;
+        createNav(pageIndex);
+        $.ajax({
+            url:&quot;分页.php&quot;,
+            type:&quot;get&quot;,
+            data:{pageIndex:pageIndex},
+            dataType:&quot;json&quot;,
+            success:function(data){
+                createNews(data);
+            }
+        })
+    }
+&lt;/script&gt;
+</code></pre><p>前台的部分完成，开始后台的    数据处理    ，创立200个新闻内容栏，并输出到前台</p>
+<pre><code>&lt;?php
+$news =array();
+for($i=0;$i&lt;200;$i++){
+    $news[]=array(&quot;新闻$i&quot;);
+}
+$pageIndex=(empty($_GET[&apos;pageIndex&apos;]))?1:intval($_GET[&apos;pageIndex&apos;]);
+$pageSize = 3;
+$start = ($pageIndex -1)*$pageSize;
+$outNews = array();
+for($i=0;$i&lt;3;$i++){
+    if(!empty($news[$start+$i])){
+        $outNews[] = $news[$start+$i];
+    }
+}
+echo json_encode($outNews);
+?&gt;
+</code></pre><p>这就是一个简单的分页器，希望大家喜欢</p>
+</style></p></li></ul>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/19/sdsa/" data-id="cja6b44w40001gjwli8oxittj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/分页器简化版/" data-id="cja89bt0l0001uwwltsnxj9xj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -244,7 +370,7 @@ echo &quot;foreach循环耗时：&quot;.($t3 - $t2).&quot;&lt;br&gt;&quot;;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja6b44w90004gjwlsi3m53mo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja89bt0p0003uwwl28fbu1bu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -441,7 +567,7 @@ echo json_encode($danmu);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja6b44xm0005gjwl6k9lj7m1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja89bt100005uwwly97lzhob" class="article-share-link">Share</a>
       
       
     </footer>
@@ -551,7 +677,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja6b44w80003gjwlqrjmh5sp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja89bt0q0004uwwlfyifx0pp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -587,7 +713,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja6b44w70002gjwlj5ls2phz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja89bt0g0000uwwlqkiqo56j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -632,7 +758,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja6b44w00000gjwlkj9ipmec" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja89bt0n0002uwwlurc6nthq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -672,7 +798,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       <ul>
         
           <li>
-            <a href="/2017/11/19/sdsa/">sdsa</a>
+            <a href="/2017/11/20/分页器简化版/">分页器简化版</a>
           </li>
         
           <li>
