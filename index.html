@@ -56,9 +56,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -68,6 +68,81 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-PHP-cookie浅谈" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/PHP-cookie浅谈/" class="article-date">
+  <time datetime="2017-11-20T14:23:31.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/PHP-cookie浅谈/">PHP cookie浅谈</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="cookie的特点"><a href="#cookie的特点" class="headerlink" title="cookie的特点"></a>cookie的特点</h3><ul>
+<li>cookie是存储在浏览器客户端的一小断数据 cookie可以同时被前台后台操作,cookie可以跨页面存取 cookie不可以跨服务器访问的</li>
+<li>cookie是有生命期的，默认是与浏览器进程相同，如果进程退出，cookie会被销毁 </li>
+<li><p>如何从所有cookie取出一个特定名的cookie的值，以键值对的形式，用分号分隔每一个cookie<br>例如：</p>
+<pre><code>document.cookie = &quot;user=yx;&quot;;
+  //读取所有的cookie
+  var str = document.cookie;
+  console.log(str);
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-0dd1087ee0d52a40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+</ul>
+<p>我们可以将cookie在后台进行处理<br>首先我们要知道所有的cookie都被存在$_COOKIE这个数组里<br>我们可以尝试下在php文件中输出，结果如下<br><img src="http://upload-images.jianshu.io/upload_images/6970920-b323639dd8e36e96.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>输出了我们在前台存入的一个cookie值</p>
+<h3 id="setcookie"><a href="#setcookie" class="headerlink" title="setcookie"></a>setcookie</h3><p>我们再来看下在后台设置cookie值，setcookie();</p>
+<p>setcookie() 函数向客户端发送一个 HTTP cookie。<br>cookie 是由服务器发送到浏览器的变量。cookie 通常是服务器嵌入到用户计算机中的小文本文件。每当计算机通过浏览器请求一个页面，就会发送这个 cookie。<br>cookie 的名称指定为相同名称的变量。例如，如果被发送的 cookie 名为 “name”，会自动创建名为 $user 的变量，包含 cookie 的值。<br>必须在任何其他输出发送前对 cookie 进行赋值。</p>
+<h5 id="setcookie语法"><a href="#setcookie语法" class="headerlink" title="setcookie语法"></a>setcookie语法</h5><blockquote>
+<p>setcookie(name,value,expire,path,domain,secure)</p>
+</blockquote>
+<ul>
+<li>name    必需。规定 cookie 的名称。</li>
+<li>value    必需。规定 cookie 的值。</li>
+<li>expire    可选。规定 cookie 的有效期。</li>
+<li>path    可选。规定 cookie 的服务器路径。</li>
+<li>domain    可选。规定 cookie 的域名。</li>
+<li>secure    可选。规定是否通过安全的 HTTPS 连接来传输 cookie。</li>
+</ul>
+<p>我们在后台测试一个小demo</p>
+<pre><code>if(!empty($_COOKIE[&apos;num&apos;])){
+    $_COOKIE[&apos;num&apos;]++;
+    setcookie(&quot;num&quot;,$_COOKIE[&apos;num&apos;]);
+    echo $_COOKIE[&apos;num&apos;];
+} else {
+    //后台设置cookie,使用setcookie方法
+    setcookie(&quot;num&quot;,1);//由于cookie会在第二次请求时生效
+    echo $_COOKIE[&apos;num&apos;];
+
+}
+</code></pre><p>$_COOKIE[‘num’]值会随着刷新每次加一；<br>下面给大家设置一个有生命期的cookie</p>
+<pre><code>//过期时间是时间戳，比如一天后失效，那就是24*3600后失效
+//setcookie(&quot;newMember&quot;,&quot;yx&quot;,time()+24*3600);
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/20/PHP-cookie浅谈/" data-id="cja8a88wg0001z5wl255iob5s" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-分页器简化版" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -221,7 +296,7 @@ echo json_encode($outNews);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/20/分页器简化版/" data-id="cja89bt0l0001uwwltsnxj9xj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/分页器简化版/" data-id="cja8a88wk0004z5wl9nb7j6vv" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -370,7 +445,7 @@ echo &quot;foreach循环耗时：&quot;.($t3 - $t2).&quot;&lt;br&gt;&quot;;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja89bt0p0003uwwl28fbu1bu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja8a88wj0003z5wl1axoqjng" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -567,7 +642,7 @@ echo json_encode($danmu);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja89bt100005uwwly97lzhob" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja8a88wb0000z5wll5vlfrcj" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -677,7 +752,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja89bt0q0004uwwlfyifx0pp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja8a88wm0006z5wl9b1qs9n8" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -713,7 +788,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja89bt0g0000uwwlqkiqo56j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja8a88wi0002z5wlylh83qp2" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -758,7 +833,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja89bt0n0002uwwlurc6nthq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja8a88wk0005z5wl6k9a741i" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -793,9 +868,13 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/11/20/PHP-cookie浅谈/">PHP cookie浅谈</a>
+          </li>
         
           <li>
             <a href="/2017/11/20/分页器简化版/">分页器简化版</a>
@@ -813,10 +892,6 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
             <a href="/2017/11/14/通过get特性获取服务端数据/">JSONP的跨域</a>
           </li>
         
-          <li>
-            <a href="/2017/11/13/PHP基础语法/">PHP基础语法</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -830,7 +905,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 Ben Ye<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
