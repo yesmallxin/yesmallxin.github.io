@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>PHP session | 一只程序猿的后花园</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言上篇提到的cookie有它的限制，因为他在数量和大小上受到限制，浏览器上储存不能超过300个，每个服务器不能超过20个，数据量不能超过4K，并且在安全性上，cookie基于储存在浏览器上，通过浏览器都可以直接访问或篡改，所以有安全上的限制，不能传递敏感或重要信息，所以我们可以使用session代替。 下面我们来看看session  session -数据存储在服务器端 每一个会话分配一个单独的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP session">
+<meta property="og:url" content="http://yoursite.com/2017/11/21/PHP-session/index.html">
+<meta property="og:site_name" content="一只程序猿的后花园">
+<meta property="og:description" content="前言上篇提到的cookie有它的限制，因为他在数量和大小上受到限制，浏览器上储存不能超过300个，每个服务器不能超过20个，数据量不能超过4K，并且在安全性上，cookie基于储存在浏览器上，通过浏览器都可以直接访问或篡改，所以有安全上的限制，不能传递敏感或重要信息，所以我们可以使用session代替。 下面我们来看看session  session -数据存储在服务器端 每一个会话分配一个单独的">
+<meta property="og:locale" content="ch-CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6970920-99f257adab638b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6970920-0e4f0cfe8eba1b2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-11-21T13:33:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP session">
+<meta name="twitter:description" content="前言上篇提到的cookie有它的限制，因为他在数量和大小上受到限制，浏览器上储存不能超过300个，每个服务器不能超过20个，数据量不能超过4K，并且在安全性上，cookie基于储存在浏览器上，通过浏览器都可以直接访问或篡改，所以有安全上的限制，不能传递敏感或重要信息，所以我们可以使用session代替。 下面我们来看看session  session -数据存储在服务器端 每一个会话分配一个单独的">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6970920-99f257adab638b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="一只程序猿的后花园" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">一只程序猿的后花园</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一入江湖岁月催</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-PHP-session" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/21/PHP-session/" class="article-date">
+  <time datetime="2017-11-21T13:33:29.000Z" itemprop="datePublished">2017-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PHP session
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>上篇提到的cookie有它的限制，因为他在数量和大小上受到限制，浏览器上储存不能超过300个，每个服务器不能超过20个，数据量不能超过4K，并且在安全性上，cookie基于储存在浏览器上，通过浏览器都可以直接访问或篡改，所以有安全上的限制，不能传递敏感或重要信息，所以我们可以使用session代替。</p>
+<p>下面我们来看看session</p>
+<ul>
+<li>session -数据存储在服务器端<ul>
+<li>每一个会话分配一个单独的session_id;</li>
+<li>该session_id通过cookie传送到前台，默认的session_id名称是PHPSESSID,这种方式可以在请求中不直接显示用户的存储信息<br><img src="http://upload-images.jianshu.io/upload_images/6970920-99f257adab638b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>前台只能看到session的ID，而不能修改session的值</li>
+<li>设置一个会员数组</li>
+<li>使用session之前需要先开启会话session_start();然后给session命名</li>
+<li>session存储在session数组$_SESSION</li>
+<li>session存储比较安全，但是如果session数量过多,会导致服务器性能下降</li>
+</ul>
+<h3 id="使用session的步骤"><a href="#使用session的步骤" class="headerlink" title="使用session的步骤"></a>使用session的步骤</h3><ul>
+<li>Session_start() ：开始一个会话或者返回已经存在的会话。</li>
+<li><p>注册SESSION变量：<br>PHP5使用$_SESSION[‘xxx’]=xxx注册SESSION全局变量。和GET，POST，COOKIE的使用方法相似。</p>
+<pre><code>session_start();
+  $_SESSION[&apos;user&apos;] = &quot;yxhh&quot;;
+$_SESSION[&apos;age&apos;] = 10;
+</code></pre><h3 id="如何删除session？"><a href="#如何删除session？" class="headerlink" title="如何删除session？"></a>如何删除session？</h3><p>1、unset ($_SESSION[‘xxx’])删除单个session，unset($_SESSION[‘xxx’]) 用来unregister一个已注册的session变量。其作用和session_unregister()相同。 session_unregister()在PHP5中不再使用，可将之打入冷宫。<br>unset($_SESSION)  此函数千万不可使用，它会将全局变量$_SESSION销毁，而且还没有可行的办法将其恢复。用户也不再可以注册$_SESSION变量。<br>2、$_SESSION=array()删除多个session<br>3、session_destroy()结束当前的会话，并清空会话中的所有资源。。该函数不会unset(释放)和当前session相关的全局变量(globalvariables),也不会删除客户端的session cookie.PHP默认的session是基于cookie的，如果要删除cookie的话，必须借助setcookie()函数。<br>  返回值：布尔值。<br>  功能说明：这个函数结束当前的session，此函数没有参数，且返回值均为true</p>
+<p> session_unset() 如果使用了$_SESSION，则该函数不再起作用。由于PHP5必定要使用$_SESSION，所以此函数可以打入冷宫了。</p>
+</li>
+</ul>
+<p>如果你觉得我们的session还是不够安全，我们可以使用加密算法，使安全性得到提高</p>
+<h4 id="加密算法-md5"><a href="#加密算法-md5" class="headerlink" title="加密算法:md5"></a>加密算法:md5</h4><blockquote>
+<p>它可以将任意长度的字符串编程为一个32位定长的字符串，md5只能单向加密，无法通过加密后的字符串重新解密为原字符串</p>
+</blockquote>
+<pre><code>&lt;?php
+  $password = &quot;123456&quot;;
+  echo md5($password);
+  ?&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-0e4f0cfe8eba1b2b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为加密算法的出现，逆向思维破解也产生了彩虹表这技术，记录了大量的md5结果，然后通过一定的算法找到一个md5结果相符的字符串。</p>
+<h4 id="加密算法sha1"><a href="#加密算法sha1" class="headerlink" title="加密算法sha1"></a>加密算法sha1</h4><blockquote>
+<p>可以将任意长度的字符串编程为一个40位定长的字符串</p>
+</blockquote>
+<pre><code>&lt;?php
+  $password = &quot;123456&quot;;
+  echo sha1($password);
+  ?&gt;
+ 结果   7c4a8d09ca3762af61e59520943dc26494f8941b
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/21/PHP-session/" data-id="cja9nv70500003zwlfyiydnp6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/20/PHP-cookie浅谈/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PHP cookie浅谈</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/21/PHP-session/">PHP session</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/20/PHP-cookie浅谈/">PHP cookie浅谈</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/20/分页器简化版/">分页器简化版</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/17/Php-date函数/">Php date函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/16/AJAX进行form表单的提交/">AJAX进行form表单的提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Ben Ye<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
