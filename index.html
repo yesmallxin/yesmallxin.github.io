@@ -69,6 +69,167 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PHP之CURD操作" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/23/PHP之CURD操作/" class="article-date">
+  <time datetime="2017-11-23T14:31:59.000Z" itemprop="datePublished">2017-11-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/23/PHP之CURD操作/">PHP之CURD操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>PHP作为一门服务端的脚本语言，既可以接受来自浏览器端的页面请求，也可以将页面的请求数据发送往数据库中储存起来，让页面不在静态，处于动态可以产生交互行为的状态，所以今天我们来认识下有关于数据库的一些东西。</p>
+<h3 id="数据库的连接"><a href="#数据库的连接" class="headerlink" title="数据库的连接"></a>数据库的连接</h3><h4 id="首先"><a href="#首先" class="headerlink" title="首先"></a>首先</h4><ul>
+<li><p>打开xampp apache服务器和 MYSQL database<br><img src="http://upload-images.jianshu.io/upload_images/6970920-8f971dcd20486307.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li><p>打开localhost/phpmyadmin，创建一张数据表<br><img src="http://upload-images.jianshu.io/upload_images/6970920-c1d2ada92b5d277e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>根据关系数据库第二范式，每个表需要设置一个主键，在这里一般需要将id设为主键，主键是一个表中的约束。这个约束，一张表只能有一个，一般作为ID使用，这个约束一般给别人外键引用。这个约束的功能就是，不可重复，保证了唯一性，正是这种特性，使得大多数人都把他作为表中ID的字段使用。同时为了提高了SQL Server系统的性能，我们可以设置索引，加快数据的查询速度与减少系统的响应时间 ，在这里我们将id设为索引。</p>
+</li>
+</ul>
+<h5 id="完成这些操作我们可以在编辑器上编写我们的代码连接服务器啦！！！"><a href="#完成这些操作我们可以在编辑器上编写我们的代码连接服务器啦！！！" class="headerlink" title="完成这些操作我们可以在编辑器上编写我们的代码连接服务器啦！！！"></a>完成这些操作我们可以在编辑器上编写我们的代码连接服务器啦！！！</h5><p>PHP连接数据库的方法通过 $link=mysqli_connect(“数据库服务器地址”,”数据库登录用户”,”数据库登录密码”,”数据库名称”)</p>
+<blockquote>
+<p>在这里数据库服务器地址默认是localhost:端口号；数据库登录用户默认拥有服务器进程的用户的名称，数据库登录密码默认值是”“。</p>
+</blockquote>
+<pre><code>&lt;?php 
+    $link = mysqli_connect(“localhost”,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+?&gt;
+</code></pre><p>写好后我们还要判断下我们是否连接上了我们的数据库，不怕一万，就怕万一埋。</p>
+<h3 id="判断数据库的连接正常"><a href="#判断数据库的连接正常" class="headerlink" title="判断数据库的连接正常"></a>判断数据库的连接正常</h3><pre><code>if(mysqli_connect_errno($link)){
+    echo &quot;错误号：&quot;.mysqli_connect_errno($link);
+    echo &quot;&lt;br&gt;错误描述:&quot;.mysqli_connect_error($link);
+    echo &quot;&lt;br&gt;错误描述:网站错误请联系管理员&quot;;
+    exit;
+}
+</code></pre><p>在这里加入mysqli_connect_errno判断语句，当没有连接上数据库的时候，我们就输出人性化提示报错，然后就将程序结束。</p>
+<blockquote>
+<p>我们介绍的CURD操作说白了，就是增 删 改 查，create! update !read !delete!</p>
+<h3 id="增删改查之”增“"><a href="#增删改查之”增“" class="headerlink" title="增删改查之”增“"></a>增删改查之”增“</h3><h4 id="确定我们的数据库连接正常后，我们就开始我们增删改查的第一步，增！！"><a href="#确定我们的数据库连接正常后，我们就开始我们增删改查的第一步，增！！" class="headerlink" title="确定我们的数据库连接正常后，我们就开始我们增删改查的第一步，增！！"></a>确定我们的数据库连接正常后，我们就开始我们增删改查的第一步，增！！</h4><p>一张空表啥都没有，所以需要我们录入数据将其补满也方便之后的前后台交互查询调用。我们在这里需要使用以下语句</p>
+</blockquote>
+<pre><code>1.$sql= insert into 表名（表的字段1，表的字段2）values(字段1的值，字段2的值) ；
+ 2.$sql= insert into 表名 表的字段一=‘字段一的值’，表的字段二=‘字段二的值’；
+</code></pre><p>然后我们需要执行查询语句mysql_query() 仅对 SELECT，SHOW，EXPLAIN 或 DESCRIBE 语句返回一个资源标识符，如果查询执行不正确则返回 FALSE。对于其它类型的 SQL 语句，mysql_query() 在执行成功时返回 TRUE，出错时返回 FALSE。</p>
+<pre><code>1.mysqli_query($link,$sql);
+</code></pre><p>然后执行关闭数据库方法，关闭数据库</p>
+<pre><code>mysqli_close($link);
+</code></pre><p>我们来试着往数据库里插入一个数据</p>
+<pre><code> $link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);//进行编码，防止中文出现乱码
+$sql = &quot;insert into menu set name=&apos;叉烧包&apos;,price=20&quot;;
+$result=mysqli_query($link,$sql);
+mysqli_close($link);
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-f8da4449a53f7582.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="增删改查之”删“"><a href="#增删改查之”删“" class="headerlink" title="增删改查之”删“"></a>增删改查之”删“</h3><h4 id="当我们的数据录入错误的时候我们当然就要把它删去，保持数据的准确性"><a href="#当我们的数据录入错误的时候我们当然就要把它删去，保持数据的准确性" class="headerlink" title="当我们的数据录入错误的时候我们当然就要把它删去，保持数据的准确性"></a>当我们的数据录入错误的时候我们当然就要把它删去，保持数据的准确性</h4><p>这里我们需要使用下列语句,这里需要借助索引减少搜查范围</p>
+<blockquote>
+<p>  delete from 表名 where</p>
+</blockquote>
+<p>我们来尝试下</p>
+<pre><code>&lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;delete from menu where id=13&quot;;
+$result=mysqli_query($link,$sql);
+mysqli_close($link);
+?&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-ad3fd1bc15b9d37e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除前"><br><img src="http://upload-images.jianshu.io/upload_images/6970920-4f9f712d8607b9ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除后"></p>
+<h3 id="增删改查之”改“"><a href="#增删改查之”改“" class="headerlink" title="增删改查之”改“"></a>增删改查之”改“</h3><pre><code>update 表名 set 字段1=&apos;值&apos;，字段2=&apos;值&apos; where 条件
+</code></pre><p>同样我们来试试将叉烧包的价格改到288</p>
+<pre><code>&lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;update menu set price=&apos;288&apos; where id=15&quot;;
+$result=mysqli_query($link,$sql);
+mysqli_close($link);
+?&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-474c4841a6a66168.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="增删改查之”查“"><a href="#增删改查之”查“" class="headerlink" title="增删改查之”查“"></a>增删改查之”查“</h3><h4 id="这应该是数据库里面最麻烦的部分，查询数据，各种姿势查询。"><a href="#这应该是数据库里面最麻烦的部分，查询数据，各种姿势查询。" class="headerlink" title="这应该是数据库里面最麻烦的部分，查询数据，各种姿势查询。"></a>这应该是数据库里面最麻烦的部分，查询数据，各种姿势查询。</h4><blockquote>
+<p> select 字段1，字段2… from 表名 where 条件</p>
+</blockquote>
+<pre><code>&lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;select name,price from menu where id=15&quot;;
+$result=mysqli_query($link,$sql);
+print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));//按关联数组输出所有结果集
+mysqli_close($link);
+?&gt;
+</code></pre><h4 id="查询结果"><a href="#查询结果" class="headerlink" title="查询结果"></a>查询结果</h4><p><img src="http://upload-images.jianshu.io/upload_images/6970920-a61fff50b9590acc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="带查询限制的查询语句"><a href="#带查询限制的查询语句" class="headerlink" title="带查询限制的查询语句"></a>带查询限制的查询语句</h3><blockquote>
+<p> select 字段 from 表名 where 条件 limit size<br>    limit 1表示只查询记录中的一条</p>
+</blockquote>
+<pre><code>  &lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;select * from menu where price=&apos;288&apos; limit 1&quot;;
+$result=mysqli_query($link,$sql);
+print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));
+mysqli_close($link);
+?&gt;
+</code></pre><h4 id="查询结果-1"><a href="#查询结果-1" class="headerlink" title="查询结果"></a>查询结果</h4><p><img src="http://upload-images.jianshu.io/upload_images/6970920-d855a640be73014a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p> select 字段 from 表名 where 条件 limit start,size<br>     limit start,size 从start位置查询size条</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/6970920-e22d28c721da8680.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>select 字段（*）from 表名 where 条件 order by 字段 desc|asc (降序、升序)<br>我们来看下效果</p>
+<pre><code>&lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;select * from menu order by id DESC&quot;;
+$result=mysqli_query($link,$sql);
+print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));
+mysqli_close($link);
+?&gt;
+</code></pre><p>我们可以看到表里的数据按id降序排序<br>    <img src="http://upload-images.jianshu.io/upload_images/6970920-f5462f97ac4853ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="分组统计查询"><a href="#分组统计查询" class="headerlink" title="分组统计查询"></a>分组统计查询</h3><p>select count(*) from 表名 可以获得表里所有行数</p>
+<pre><code>&lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;select count(*) from menu&quot;;
+$result=mysqli_query($link,$sql);
+print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));
+mysqli_close($link);
+</code></pre><p>?&gt;<br>我们来看下效果<br><img src="http://upload-images.jianshu.io/upload_images/6970920-0234a247c3c4a017.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>select count(*) as num from 表名  将count结果作为一个字段名检索</p>
+<pre><code>  &lt;?php
+$link = mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;&quot;,&quot;mydb&quot;);
+mysqli_set_charset($link,&quot;utf8&quot;);
+$sql = &quot;select count(*) as num from menu&quot;;
+$result=mysqli_query($link,$sql);
+print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));
+mysqli_close($link);
+?&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6970920-6070b8c6de671190.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>我们还可以通过分组 ground by 字段名 根据某个字段进行分组查询<br>group by + 多字段列表：</p>
+<p>表示根据后面的字段来分组,如果只有1个字段,那只是根据这个字段的值来进行一次分组就可以了；若后面有多个字段，那表示根据多字段的值来进行层次分组，分组层次从左到右，即先按第1个字段分组，然后在第1个字段值相同的记录中，再根据第2个字段的值进行分组；接着第2个字段值相同的记录中，再根据第3个字段的值进行分组……依次类推。</p>
+<p>这样分组后，显然每条记录(field1,field2,…)的数据都是唯一 。</p>
+<p>注意：<br>1.where条件在group by前面<br>2.select 后面的所有列中,没有使用聚合函数的列,必须出现在 group by 后面！<br>    &lt;?php<br>    $link = mysqli_connect(“localhost”,”root”,””,”mydb”);<br>    mysqli_set_charset($link,”utf8”);<br>    $sql = “select * from student where city=’上海’  group by city”;<br>    $result=mysqli_query($link,$sql);<br>    print_r( mysqli_fetch_all($result,MYSQLI_ASSOC));<br>    mysqli_close($link);<br>    ?&gt;</p>
+<p>我们可以看到根据城市我们将城市为上海的成功分为一组<br><img src="http://upload-images.jianshu.io/upload_images/6970920-1ef2eac69c1ab86d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>数据库博大精深，待我们慢慢道来，且听下回分解</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/23/PHP之CURD操作/" data-id="cjackuz320001s0wl74layk5u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-PHP-session" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/21/PHP-session/" class="article-date">
@@ -138,7 +299,7 @@ $_SESSION[&apos;age&apos;] = 10;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/21/PHP-session/" data-id="cja9nv70500003zwlfyiydnp6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/21/PHP-session/" data-id="cjackuz350003s0wl0145yxzv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,7 +374,7 @@ $_SESSION[&apos;age&apos;] = 10;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/20/PHP-cookie浅谈/" data-id="cja9nv70e00033zwlzm4fgh9s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/PHP-cookie浅谈/" data-id="cjackuz270000s0wlgmngwfam" class="article-share-link">Share</a>
       
       
     </footer>
@@ -375,7 +536,7 @@ echo json_encode($outNews);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/20/分页器简化版/" data-id="cja9nv70i00063zwlbmqkmtj2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/20/分页器简化版/" data-id="cjackuz380006s0wlvras0tpz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -524,7 +685,7 @@ echo &quot;foreach循环耗时：&quot;.($t3 - $t2).&quot;&lt;br&gt;&quot;;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cja9nv70f00043zwlbm668uo2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/17/Php-date函数/" data-id="cjackuz390007s0wl3ebcdzet" class="article-share-link">Share</a>
       
       
     </footer>
@@ -721,7 +882,7 @@ echo json_encode($danmu);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cja9nv70d00023zwlt9nu349f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/16/AJAX进行form表单的提交/" data-id="cjackuz340002s0wlq43voghr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -831,7 +992,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cja9nv70i00073zwl3vkjgyhd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/14/通过get特性获取服务端数据/" data-id="cjackuz3a0008s0wls0g1x8sz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -867,7 +1028,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cja9nv70b00013zwl6o9kojn0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/13/PHP基础语法/" data-id="cjackuz360004s0wlgb91wtoz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -912,7 +1073,7 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cja9nv70g00053zwlgsh4gcwq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/11/hello-world/" data-id="cjackuz370005s0wlxp81jnqg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -952,6 +1113,10 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
       <ul>
         
           <li>
+            <a href="/2017/11/23/PHP之CURD操作/">PHP之CURD操作</a>
+          </li>
+        
+          <li>
             <a href="/2017/11/21/PHP-session/">PHP session</a>
           </li>
         
@@ -965,10 +1130,6 @@ var thing_id = document.getElementById(&quot;thing_id&quot;);
         
           <li>
             <a href="/2017/11/17/Php-date函数/">Php date函数</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/16/AJAX进行form表单的提交/">AJAX进行form表单的提交</a>
           </li>
         
       </ul>
